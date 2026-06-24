@@ -1,0 +1,9 @@
+name = "photohost-frontend"
+compatibility_date = "2026-05-30"
+pages_build_output_dir = "dist"
+
+[vars]
+VITE_WORKER_URL = ""
+
+[env.preview.vars]
+VITE_WORKER_URL = "https://api.pics.example.com"

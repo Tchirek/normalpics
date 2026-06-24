@@ -1,0 +1,11 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://pics.example.com https://api.pics.example.com; connect-src 'self' https://pics.example.com https://api.pics.example.com https://print.example.com https://your-account-id.r2.cloudflarestorage.com; frame-src https://comments.pics.example.com; base-uri 'none'; form-action 'self' https://api.pics.example.com; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
