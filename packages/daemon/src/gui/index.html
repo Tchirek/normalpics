@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NormalPics Sync</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">NormalPics</p>
+        <h1>本地同步</h1>
+      </div>
+      <div class="status">
+        <span id="statusDot" class="dot wait"></span>
+        <span id="statusText">正在启动</span>
+      </div>
+    </section>
+
+    <section class="panel primary">
+      <p id="summary" class="summary">正在连接云端与本地图片目录。</p>
+      <div class="actions">
+        <button id="openWeb" class="main-action">打开图库</button>
+        <button id="openPhotos">打开本地目录</button>
+        <button id="syncMissing">一键同步</button>
+        <button id="restart">重新连接</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>同步目录</h2>
+          <p id="photoDirText" class="path"></p>
+        </div>
+        <button id="choosePhotoDir">更换目录</button>
+      </div>
+    </section>
+
+    <section class="panel row-panel">
+      <div>
+        <h2>开机自启</h2>
+        <p id="startupState" class="hint">正在检查</p>
+      </div>
+      <label class="switch">
+        <input id="autoStart" type="checkbox">
+        <span></span>
+      </label>
+    </section>
+
+    <section id="llmPanel" class="panel llm-panel">
+      <div class="section-head">
+        <div>
+          <h2>多模态标注</h2>
+          <p class="hint">自动生成一句介绍和搜索标签。既有图片补写会先领取短租约，避免多台电脑同时抢同一张。</p>
+        </div>
+        <label class="switch">
+          <input id="llmVisionCapable" type="checkbox">
+          <span></span>
+        </label>
+      </div>
+      <div class="fields">
+        <label>
+          <span>Base URL</span>
+          <input id="llmBaseUrl" type="text" spellcheck="false">
+        </label>
+        <label>
+          <span>Model</span>
+          <input id="llmModel" type="text" spellcheck="false">
+        </label>
+        <label>
+          <span>API Key</span>
+          <input id="llmApiKey" type="password" spellcheck="false">
+        </label>
+        <label>
+          <span>Max tokens</span>
+          <input id="llmMaxTokens" type="number" min="40" max="500">
+        </label>
+        <label>
+          <span>Timeout ms</span>
+          <input id="llmTimeoutMs" type="number" min="3000" max="120000">
+        </label>
+        <label class="wide">
+          <span>Prompt</span>
+          <textarea id="llmPrompt" rows="5" spellcheck="false"></textarea>
+        </label>
+      </div>
+      <div class="advanced-actions">
+        <p id="llmStatus" class="inline-status"></p>
+        <button id="testLlm">测试 LLM</button>
+        <button id="backfillMetadata">检查既有图片</button>
+        <button id="saveAdvanced" class="main-action">保存</button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./renderer.js"></script>
+</body>
+</html>

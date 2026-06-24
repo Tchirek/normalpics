@@ -1,0 +1,76 @@
+{
+  "name": "photohost-daemon",
+  "version": "0.1.0",
+  "description": "Portable GUI daemon for PhotoHost local sync and Cloudflare Tunnel",
+  "author": "Tchirek",
+  "private": true,
+  "type": "module",
+  "main": "dist/gui/bootstrap.cjs",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc && node scripts/copy-gui.mjs",
+    "start:prod": "node dist/index.js",
+    "gui": "npm run build && electron dist/gui/main.js",
+    "package:win": "npm run build && electron-builder --win portable"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.637.0",
+    "@aws-sdk/s3-request-presigner": "^3.637.0",
+    "7zip-bin": "^5.2.0",
+    "dotenv": "^16.4.5",
+    "eventsource": "^2.0.2",
+    "heic-convert": "^2.1.0",
+    "openai": "^4.55.7",
+    "p-limit": "^5.0.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "electron": "42.3.3",
+    "electron-builder": "26.8.1",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4"
+  },
+  "build": {
+    "appId": "top.tchirek.normalpics.sync",
+    "productName": "NormalPics Sync",
+    "artifactName": "PhotoHost-Daemon-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json",
+      "node_modules/**/*",
+      "!node_modules/electron/**/*",
+      "!node_modules/electron-builder/**/*",
+      "!node_modules/app-builder-bin/**/*",
+      "!node_modules/builder-util/**/*",
+      "!node_modules/builder-util-runtime/**/*",
+      "!node_modules/dmg-builder/**/*",
+      "!node_modules/@electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "bin/cloudflared.exe",
+        "to": "bin/cloudflared.exe"
+      }
+    ],
+    "asarUnpack": [
+      "node_modules/sharp/**/*",
+      "node_modules/@img/**/*"
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "forceCodeSigning": false,
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  }
+}
