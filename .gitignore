@@ -1,0 +1,49 @@
+node_modules/
+dist/
+build/
+release/
+.wrangler/
+.env
+.env.*
+!.env.example
+!packages/frontend/.env.production
+*.log
+*.local
+*HANDOFF*.md
+*review*.md
+*review*.txt
+*audit-notes*.md
+*anti-pattern*.md
+*internal*.md
+*private*.md
+private/
+docs/internal/
+
+# Cloudflare and local daemon state
+.dev.vars
+.dev.vars.*
+photohost-daemon.config.json
+normalpics-sync.log
+cloudflared/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Generated frontend snapshots and rollback bundles
+packages/frontend/dist/
+packages/frontend/dist-before-rollback-*/
+packages/frontend/rollback-*/
+packages/frontend/src-before-local-rollback-*/
+
+# Generated daemon binaries and packaged app output
+packages/daemon/bin/
+packages/daemon/build/
+packages/daemon/dist/
+packages/daemon/release/
+
+# OS/editor artifacts
+.DS_Store
+Thumbs.db
+NUL
+-

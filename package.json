@@ -1,0 +1,18 @@
+{
+  "name": "normalpics",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NormalPics workspace root",
+  "workspaces": [
+    "packages/frontend",
+    "packages/worker",
+    "packages/daemon"
+  ],
+  "scripts": {
+    "build:worker": "npm --workspace packages/worker run build",
+    "build:frontend": "npm --workspace packages/frontend run build",
+    "build:daemon": "npm --workspace packages/daemon run build",
+    "build:all": "npm run build:worker && npm run build:frontend && npm run build:daemon"
+  }
+}
