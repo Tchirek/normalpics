@@ -1,0 +1,49 @@
+name = "photohost-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+workers_dev = true
+preview_urls = true
+
+routes = [
+  { pattern = "pics.example.com/api/*", zone_name = "example.com" },
+  { pattern = "pics.example.com/img/*", zone_name = "example.com" },
+  { pattern = "api.pics.example.com", custom_domain = true }
+]
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "photohost"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "photohost"
+database_id = "947cbbb6-7eda-4081-84a3-40873da0fe70"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "5554687838b5436bbf6ccbd2a7a20a3d"
+
+[vars]
+TUNNEL_URL = "https://pics-tunnel.example.com"
+LLM_ATTRIBUTION = "Qwen3.5 9B - 2080 Ti 22G"
+FRONTEND_ORIGIN = "https://photohost-frontend.pages.dev"
+FRONTEND_ORIGINS = "https://photohost-frontend.pages.dev,https://pics.example.com,https://comments.pics.example.com,https://normalpics-comments.pages.dev,http://localhost:4329"
+R2_ACCOUNT_ID = "your-account-id"
+R2_BUCKET_NAME = "photohost"
+PRINT_609_BASE_URL = "https://print.example.com"
+# Comment-UI accounts
+GOOGLE_CLIENT_ID = "195067671154-8k3i273rovea5hb2eaq597jj6kkgv5qa.apps.googleusercontent.com"
+OAUTH_REDIRECT_URI = "https://api.pics.example.com/api/auth/callback/google"
+EMAIL_FROM = "NormalPics <noreply@mail.example.com>"
+COMMENT_UI_ORIGINS = "https://comments.pics.example.com,http://localhost:4329"
+
+# Secrets, set with wrangler secret put:
+# PIN_HASH
+# DELETE_PIN_HASH
+# JWT_SECRET
+# DAEMON_SECRET
+# R2_ACCESS_KEY_ID
+# R2_SECRET_ACCESS_KEY
+# PRINT_609_HANDOFF_SECRET
+# GOOGLE_CLIENT_SECRET
+# RESEND_API_KEY
