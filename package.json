@@ -10,6 +10,7 @@
     "packages/daemon"
   ],
   "scripts": {
+    "test": "npm --workspace packages/frontend test && npm --workspace packages/worker test",
     "build:worker": "npm --workspace packages/worker run build",
     "build:frontend": "npm --workspace packages/frontend run build",
     "build:daemon": "npm --workspace packages/daemon run build",
