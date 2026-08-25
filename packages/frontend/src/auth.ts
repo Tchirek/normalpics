@@ -1,6 +1,6 @@
 const TOKEN_KEY = 'ph_token';
 const DELETE_TOKEN_KEY = 'ph_delete_token';
-const API_BASE = (import.meta.env.VITE_WORKER_URL || '').replace(/\/$/, '');
+const API_BASE = (import.meta.env?.VITE_WORKER_URL || '').replace(/\/$/, '');
 
 let activePrompt: Promise<boolean> | null = null;
 

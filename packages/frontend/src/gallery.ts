@@ -18,6 +18,13 @@ const PAGE_SIZE = 50;
 const FAST_REFRESH_DELAYS = [900, 1400, 2200, 3500, 5500, 8000, 10_000];
 const BROWSER_SAFE_EXTS = new Set(['jpg', 'jpeg', 'png', 'webp', 'gif']);
 
+export async function fetchImagePage(params: URLSearchParams): Promise<ImageListResponse> {
+  const viewerId = peekSessionViewerId();
+  return apiFetch<ImageListResponse>(`/api/images?${params.toString()}`, viewerId ? {
+    headers: { 'X-Viewer-Id': viewerId }
+  } : {});
+}
+
 export function initGallery(): GalleryController {
   const gallery = document.getElementById('gallery')!;
   const masonry = document.createElement('div');
@@ -406,10 +413,7 @@ export function initGallery(): GalleryController {
     if (requestSearch) params.set('q', requestSearch);
 
     try {
-      const viewerId = requestSearch ? '' : peekSessionViewerId();
-      const response = await apiFetch<ImageListResponse>(`/api/images?${params.toString()}`, viewerId ? {
-        headers: { 'X-Viewer-Id': viewerId }
-      } : {});
+      const response = await fetchImagePage(params);
       if (requestSearch !== searchQuery) return;
       const known = new Set(items.map((item) => item.id));
       const fresh = response.items

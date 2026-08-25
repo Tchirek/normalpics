@@ -1,6 +1,6 @@
 import { getToken } from './auth';
 
-export const API_BASE = (import.meta.env.VITE_WORKER_URL || '').replace(/\/$/, '');
+export const API_BASE = (import.meta.env?.VITE_WORKER_URL || '').replace(/\/$/, '');
 
 export function assetUrl(path: string): string {
   if (/^https?:\/\//.test(path)) return path;
