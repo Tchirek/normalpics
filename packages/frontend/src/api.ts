@@ -1,5 +1,4 @@
 import { getToken } from './auth';
-import { getViewerId } from './viewer';
 
 export const API_BASE = (import.meta.env.VITE_WORKER_URL || '').replace(/\/$/, '');
 
@@ -11,7 +10,6 @@ export function assetUrl(path: string): string {
 export async function apiRequest(path: string, init: RequestInit = {}): Promise<Response> {
   const headers = new Headers(init.headers);
   const token = getToken();
-  headers.set('X-Viewer-Id', getViewerId());
   if (token && !headers.has('Authorization')) headers.set('Authorization', `Bearer ${token}`);
   if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');

@@ -38,7 +38,7 @@ function allowedHeaders(path: string): string[] {
   if (path.startsWith('/api/sync')) return ['Content-Type', 'X-Daemon-Secret', 'X-Device-Id', 'X-Device-Name'];
   if (path.startsWith('/api/images')) return ['Content-Type', 'Authorization', 'X-Viewer-Id'];
   if (path.startsWith('/api/comment')) return ['Content-Type', 'Authorization', 'X-Viewer-Id'];
-  return ['Content-Type', 'Authorization', 'X-Viewer-Id'];
+  return ['Content-Type', 'Authorization'];
 }
 
 function applySecurityHeaders(path: string, headers: Headers): void {

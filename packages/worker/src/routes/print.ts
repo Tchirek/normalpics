@@ -8,27 +8,15 @@ import { rateLimitKey } from '../lib/viewer-hash';
 
 const print = new Hono<{ Bindings: Env; Variables: Variables }>();
 
-function viewerId(c: { req: { header: (name: string) => string | undefined } }): string | null {
-  const value = (c.req.header('X-Viewer-Id') || '').trim();
-  return /^[A-Za-z0-9_-]{16,80}$/.test(value) ? value : null;
-}
-
 async function consumeHandoffRateLimits(env: Env, headers: { header: (name: string) => string | undefined }): Promise<boolean> {
   const ip = clientIp(headers);
-  const viewer = viewerId({ req: headers }) || 'anonymous';
-  const [viewerKey, ipKey, globalKey] = await Promise.all([
-    rateLimitKey(env.JWT_SECRET, 'print-handoff-viewer', viewer),
+  const [ipKey, globalKey] = await Promise.all([
     rateLimitKey(env.JWT_SECRET, 'print-handoff-ip', ip),
     rateLimitKey(env.JWT_SECRET, 'print-handoff-global', 'global')
   ]);
   const ok = await consumeRateLimit(env, {
-    identityHash: viewerKey,
-    minIntervalMs: 1_500,
-    tenMinuteLimit: 12,
-    dayLimit: 80
-  }) && await consumeRateLimit(env, {
     identityHash: ipKey,
-    minIntervalMs: 0,
+    minIntervalMs: 1_500,
     tenMinuteLimit: 40,
     dayLimit: 200
   }) && await consumeRateLimit(env, {

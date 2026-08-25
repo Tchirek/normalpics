@@ -1,7 +1,7 @@
 import { apiFetch, assetUrl } from './api';
 import { iconButton } from './icons';
 import { getDeleteToken, isDeleteAuthenticated, promptPin } from './auth';
-import { getViewerId, hasLocalCommentedImage, markLocalCommentedImage } from './viewer';
+import { hasLocalCommentedImage, markLocalCommentedImage, peekSessionViewerId, requireSessionViewerId } from './viewer';
 import type { ImageItem } from './types';
 
 const MIN_SCALE = 1;
@@ -226,10 +226,11 @@ export function initLightbox(getItems: () => ImageItem[]): { open: (id: string, 
     const item = currentItem();
     if (!commentsLoaded || !item || !commentFrame.contentWindow) return;
     if (reset) delete commentFrame.dataset.contextReady;
+    const viewerId = peekSessionViewerId();
     commentFrame.contentWindow.postMessage({
       type: 'normalpics:context',
       imageId: item.id,
-      viewerId: getViewerId()
+      ...(viewerId ? { viewerId } : {})
     }, COMMENT_ORIGIN);
   }
 
@@ -1242,6 +1243,7 @@ export function initLightbox(getItems: () => ImageItem[]): { open: (id: string, 
     const item = currentItem();
     if (!item || likeBusy) return;
 
+    const viewerId = requireSessionViewerId();
     likeBusy = true;
     const previousLiked = item.likedByMe;
     const previousCount = item.likeCount || 0;
@@ -1254,6 +1256,7 @@ export function initLightbox(getItems: () => ImageItem[]): { open: (id: string, 
     try {
       const result = await apiFetch<LikeResponse>(`/api/images/${encodeURIComponent(item.id)}/like`, {
         method: 'POST',
+        headers: { 'X-Viewer-Id': viewerId },
         body: JSON.stringify({ liked: item.likedByMe })
       });
       item.likedByMe = result.likedByMe;

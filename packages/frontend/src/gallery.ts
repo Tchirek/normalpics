@@ -1,7 +1,7 @@
 import { apiFetch, assetUrl } from './api';
 import { icon } from './icons';
 import type { ImageItem, ImageListResponse, UploadPreview } from './types';
-import { hasLocalCommentedImage, markLocalCommentedImage } from './viewer';
+import { hasLocalCommentedImage, markLocalCommentedImage, peekSessionViewerId } from './viewer';
 
 export interface GalleryController {
   loadInitial: () => Promise<void>;
@@ -406,7 +406,10 @@ export function initGallery(): GalleryController {
     if (requestSearch) params.set('q', requestSearch);
 
     try {
-      const response = await apiFetch<ImageListResponse>(`/api/images?${params.toString()}`);
+      const viewerId = requestSearch ? '' : peekSessionViewerId();
+      const response = await apiFetch<ImageListResponse>(`/api/images?${params.toString()}`, viewerId ? {
+        headers: { 'X-Viewer-Id': viewerId }
+      } : {});
       if (requestSearch !== searchQuery) return;
       const known = new Set(items.map((item) => item.id));
       const fresh = response.items
@@ -433,7 +436,10 @@ export function initGallery(): GalleryController {
   async function refreshImage(id: string): Promise<boolean> {
     const current = items.findIndex((item) => item.id === id);
     if (current === -1) return true;
-    const next = await apiFetch<ImageItem>(`/api/images/${id}`).catch(() => null);
+    const viewerId = peekSessionViewerId();
+    const next = await apiFetch<ImageItem>(`/api/images/${id}`, viewerId ? {
+      headers: { 'X-Viewer-Id': viewerId }
+    } : {}).catch(() => null);
     if (!next || next.syncStatus === 'pending') return false;
 
     next.commentedByMe = Boolean(next.commentedByMe || hasLocalCommentedImage(next.id));

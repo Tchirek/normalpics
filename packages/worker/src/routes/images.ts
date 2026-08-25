@@ -52,8 +52,8 @@ function hasBrowserSafeOriginal(row: ImageRow): boolean {
   return ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes((row.ext || '').toLowerCase());
 }
 
-function viewerId(c: { req: { header: (name: string) => string | undefined; query: (name: string) => string | undefined } }): string | null {
-  const value = (c.req.header('X-Viewer-Id') || c.req.query('viewerId') || '').trim();
+function viewerId(c: { req: { header: (name: string) => string | undefined } }): string | null {
+  const value = (c.req.header('X-Viewer-Id') || '').trim();
   if (!/^[A-Za-z0-9_-]{16,80}$/.test(value)) return null;
   return value;
 }
